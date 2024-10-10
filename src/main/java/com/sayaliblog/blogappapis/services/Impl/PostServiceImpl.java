@@ -83,12 +83,15 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostDto> getAllPosts() {
-       int pageSize=5;
-       int pageNumber=1;
+    public List<PostDto> getAllPosts(Integer pageNumber,Integer pageSize) {
+        //JPARepositories have alread extend Paginations so we can user FindAll(pageable pagebale) method for pagination
+        //ex.pagesize and pagenumber provide ....Pageable needs to pageble import karlo then pagerequest and provide that pagebale to findall method
+       //int pageSize=5;
+       //int pageNumber=1;
        Pageable p= PageRequest.of(pageSize,pageSize);
-       
+
         Page<Post> post1 = this.postrepo.findAll(p);
+        List<Post> post=post1.getContent();
         List<PostDto> postDtos= post1.stream().map((cate)->this.modelMapper.map(cate, PostDto.class)).collect(Collectors.toList());
        // List<CategoryDto> categoryDtos= category.stream().map((cate)->this.modelMapper.map(cate,CategoryDto.class)).collect(Collectors.toList());
         return postDtos;
